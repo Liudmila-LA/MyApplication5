@@ -2,7 +2,6 @@ package com.example.myapplication5
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 
 import kotlinx.android.synthetic.main.activity_main_two.*
@@ -74,10 +73,6 @@ class MainTwoActivity : AppCompatActivity() {
         )
         mRightCol.adapter=adapter
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
 }
