@@ -16,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener
 
 class MainActivity : AppCompatActivity()  {
     var lvMain : ListView? = null //
-    var mInfoTextView : TextView? = null  //=
+    //var mInfoTextView : TextView? = null  //=
     val sUrl = "https://sample.fitnesskit-admin.ru/schedule/get_group_lessons_v2/1/"
     var mArrayFitnessObject = emptyArray<Any>() //MutableListIterator<Any>  //emptyArray<Any>()
     val mArrayKey = arrayOf("name","teacher","place","startTime","endTime","pay","weekDay","availability","description")
