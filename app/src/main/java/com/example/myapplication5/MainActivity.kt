@@ -13,6 +13,7 @@ import java.io.File
 import java.io.FileWriter
 import android.content.Intent
 import android.widget.AdapterView.OnItemClickListener
+import kotlinx.android.synthetic.main.activity_main_two.view.*
 
 class MainActivity : AppCompatActivity()  {
     var lvMain : ListView? = null //
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity()  {
 
     }
 
-    internal inner class GetUrlContentTask1 : AsyncTask<String, Int, String>() {
+    internal inner class GetUrlContentTask1 : AsyncTask<String, Int, Boolean>() {
         var listeners = emptyArray<Notify>()
 
 
@@ -58,8 +59,9 @@ class MainActivity : AppCompatActivity()  {
         fun addListener(listener: Notify) {
             listeners += listener
         }
-        override fun doInBackground(vararg urls: String): String {
+        override fun doInBackground(vararg urls: String): Boolean {
             var arrayJson : JSONArray
+            var mTryRFile = false
             try {
                 val url = URL(urls[0])
                 val mFaleJSONText = File(filesDir, "mFale.json")
@@ -67,29 +69,38 @@ class MainActivity : AppCompatActivity()  {
                 mRecordsForFile.write(url.readText())
                 arrayJson = JSONArray(url.readText())
                 fitnessObject(arrayJson)
-                return url.readText()
+                //return url.readText()
                 //return url.readText()
             }catch (h:NumberFormatException){
-                val url = File(filesDir, "mFale.json")
-                //return url.readText()
-                arrayJson = JSONArray(url.readText())
-                fitnessObject(arrayJson)
-                return url.readText()
+                // а тут надо бы собирать описание ошибки.
+                mTryRFile = true
             }
-
-
-
+            if (mTryRFile == true){
+                try {
+                    val url = File(filesDir, "mFale.json")
+                    //return url.readText()
+                    arrayJson = JSONArray(url.readText())
+                    fitnessObject(arrayJson)
+                    //return url.readText()
+                }catch (h:NumberFormatException){
+                    // а тут надо бы собирать описание ошибки.
+                    return false
+                }
+            }
+        return true
         }
 
-        override fun onPostExecute(result: String) {
+        override fun onPostExecute(result: Boolean) {
             super.onPostExecute(result)
 
-            try {
-                listeners!![0].doEvent()
-            } finally {
+            if (result) {
+                try {
+                    listeners!![0].doEvent()
+                } finally {
 
+                }
             }
-
+            // else <Тут надо бы сообщить пользователю, что данных нет>
         }
         fun fitnessObject(arrayJson:JSONArray){
 
